@@ -41,6 +41,8 @@ void Merge(int *arr, int form, int to, int mid)
 	{
 		arr[i] = temp[i -form];
 	}
+	
+	delete[] temp;
 }
 
 void MergeSort(int *arr, int form, int to)
@@ -58,11 +60,11 @@ void MergeSort(int *arr, int form, int to)
 
 int main()
 {
-	cout<<"ÐèÒªÊäÈëµÄÊý¾Ý¸öÊý£º ";
+	cout<<"éœ€è¦è¾“å…¥çš„æ•°æ®ä¸ªæ•°ï¼š ";
 	int n;
 	cin >> n;
 	int *arr = new int[n];
-	cout <<"ÊäÈëÐèÒªÅÅÐòµÄÊý¾Ý£º "<<endl;
+	cout <<"è¾“å…¥éœ€è¦æŽ’åºçš„æ•°æ®ï¼š "<<endl;
 	for(int i=0;i < n; i++)
 	{
 		cin >> arr[i];
@@ -72,6 +74,8 @@ int main()
 	
 	for(int i=0; i < n; i++)
 		cout<<arr[i]<<" ";
+	
+	delete[] arr;
 
 	return 0;
 }
