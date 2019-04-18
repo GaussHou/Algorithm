@@ -1,89 +1,40 @@
-#include <iostream>
-#include <string>
-using namespace std;
+散列函数：元素在数组的位置与关系码之间的映射。散列函数的好坏决定了哈希冲突的程度。
+哈希冲突：多个关系码对应数组的同一个位置，解决方法有两种：闭散列（开放地址法）和开散列（链地址法）；开放地址法有两种方法：线性探测和二次探测。
 
-const int TABLE_SIZE = 127;
+线性探测：多个关键码对应到同一个数组位置时，寻找下一个空位置存储。
+    插入：
+    if N+1 == M, prevent insertion    负荷系数太高，禁止插入；
 
-class HashEntry
-{
-public:
-	string value;
-	HashEntry(string value)
-	{
-		this->value = value;
-	}
-};
+    step = 0; i = base = key%HT.length;    计算的基础位置为base;如果base位置为空，则插入，如果此位置有相同的数，不执行，如何存在不同的值，寻找下一个空位
 
+while (HT[i] != EMPTY && HT[i] != DELETED)   判断此位置是否是空的或者已经被删除的状态；若不是空的，执行语句
 
-class HashMap
-{
-private:
-	HashEntry **table;
-public:
-	HashMap()
-	{
-		table = new HashEntry*[TABLE_SIZE];
-		for(int k=0; k < TABLE_SIZE; k++)
-		{
-			table[k] = NULL;
-		}
-	}
+  step++; i = (base+step*1)%HT.length      步数加1，将base移位到下一个位置判断是否是空位置
 
-	//hash function
-	int HashFunc(string value)
-	{
-		int key = 0;
-		for(int i=0; i<value.size();i++)
-		{
-			key += value[i];
-		}
-		return key % TABLE_SIZE;
-	}
+found insertion point, insert key at HT[i]   如果此位置为空，插入元素
 
-	void Insert(string value)
-	{
-		int hash = HashFunc(value);
-		if(table[hash] == NULL)
-		{
-			table[hash] = new HashEntry(value);
-		}
-	}
+    删除：
+    step = 0; i = base = key%HT.length;     首先计算关键码的原始起始位置，如果此位置为空，没有由此元素；如果此位置是需要寻找的元素，则删除
+                                            如果此位置元素不等于需要删除的元素，寻找此下一个对应位置
 
-	HashEntry* Search(string value)
-	{
-		int hash = HashFunc(value);
-		if(table[hash] == NULL)
-			return NULL;
-		else
-			return table[hash];
-	}
+while (true)
 
-	void Remove(string value)
-	{
-		int hash = HashFunc(value);
-		if(table[hash] == NULL)
-		{
-			cout<<"没有发现元素"<<value<<endl;
-		}
-		else
-		{
-			table[hash] == NULL;
-			cout<<"元素值"<<value<<"被删除"<<endl;
-		}
+  if (HT[i] == EMPTY) break //   if (HT[i] == EMPTY) break // key not found
 
-	}
+  else if (HT[i] == key) //   else if (HT[i] == key)
 
+    HT[i] = DELETED, break //     HT[i] = DELETED
 
-};
+  else step++; i = (base+step*1)%HT.length
+  
+  
+      寻找：
+      step = 0; i = base = key%HT.length;   方法类似删除
 
+while (true)
 
-int main()
-{
-	HashMap hash;
-	hash.Insert("one");
-	hash.Insert("two");
-	hash.Insert("three");
+  if (HT[i] == EMPTY) return "not found"
 
-	cout<<hash.Search("two");
-	return 0;
-}
+  else if (HT[i] == key) return "found at index i"
+
+  else step++; i = (base+step*1)%HT.length
